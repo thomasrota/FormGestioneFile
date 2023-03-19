@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FormStrutture
 {
@@ -37,12 +38,25 @@ namespace FormStrutture
             }
             else
             {
-                AumentaNumero(pos, path);
+                AumentaQuantità(pos, path);
             }
             Lista.Clear();
             Visualizza(path);
         }
-       
+        private void modif_Click(object sender, EventArgs e)
+        {
+            int pos = Ricerca(Nome.Text, path);
+            if (pos == -1)
+            {
+                MessageBox.Show("Elemento non presente!");
+            }
+            else
+            {
+                Modifica(pos, NomeMod.Text, float.Parse(PrezzoMod.Text), path);
+            }
+            Lista.Clear();
+            Visualizza(path);
+        }
         private void ext_Click(object sender, EventArgs e)
         {
             var rispExt = MessageBox.Show("È sicuro di voler terminare l'applicazione?", "Uscita programma", MessageBoxButtons.YesNo);
@@ -85,7 +99,7 @@ namespace FormStrutture
                 sw.WriteLine($"{nome};{prezzo.ToString("0.00")};1");
             }
         }
-        public void AumentaNumero(int posizione, string filePath)
+        public void AumentaQuantità(int posizione, string filePath)
         {
             using (StreamReader sr = File.OpenText(filePath))
             {
@@ -106,6 +120,33 @@ namespace FormStrutture
                             int numero = int.Parse(dati[2]);
                             numero++;
                             sw.WriteLine($"{dati[0]};{dati[1]};{numero.ToString()}");
+                        }
+                    }
+                }
+            }
+            File.Delete(filePath);
+            File.Move("Lista.csv", filePath);
+            File.Delete("Lista.csv");
+        }
+        public void Modifica(int posizione, string nome, float prezzo, string filePath)
+        {
+            using (StreamReader sr = File.OpenText(filePath))
+            {
+                string s;
+                using (StreamWriter sw = new StreamWriter("Lista.csv", append: true))
+                {
+                    int riga = 0;
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        riga++;
+                        string[] dati = s.Split(';');
+                        if (riga != posizione)
+                        {
+                            sw.WriteLine(s);
+                        }
+                        else
+                        {
+                            sw.WriteLine($"{nome};{prezzo.ToString("0.00")};{dati[2]}");
                         }
                     }
                 }

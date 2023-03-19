@@ -39,6 +39,9 @@
             this.Nome = new System.Windows.Forms.TextBox();
             this.Prezzo = new System.Windows.Forms.TextBox();
             this.Lista = new System.Windows.Forms.ListView();
+            this.modif = new System.Windows.Forms.Button();
+            this.NomeMod = new System.Windows.Forms.TextBox();
+            this.PrezzoMod = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -136,16 +139,43 @@
             this.Lista.HideSelection = false;
             this.Lista.Location = new System.Drawing.Point(411, 27);
             this.Lista.Name = "Lista";
-            this.Lista.Size = new System.Drawing.Size(377, 411);
+            this.Lista.Size = new System.Drawing.Size(377, 372);
             this.Lista.TabIndex = 17;
             this.Lista.UseCompatibleStateImageBehavior = false;
             this.Lista.View = System.Windows.Forms.View.List;
+            // 
+            // modif
+            // 
+            this.modif.Location = new System.Drawing.Point(17, 265);
+            this.modif.Name = "modif";
+            this.modif.Size = new System.Drawing.Size(223, 23);
+            this.modif.TabIndex = 18;
+            this.modif.Text = "Modifica";
+            this.modif.UseVisualStyleBackColor = true;
+            this.modif.Click += new System.EventHandler(this.modif_Click);
+            // 
+            // NomeMod
+            // 
+            this.NomeMod.Location = new System.Drawing.Point(17, 239);
+            this.NomeMod.Name = "NomeMod";
+            this.NomeMod.Size = new System.Drawing.Size(100, 20);
+            this.NomeMod.TabIndex = 19;
+            // 
+            // PrezzoMod
+            // 
+            this.PrezzoMod.Location = new System.Drawing.Point(140, 239);
+            this.PrezzoMod.Name = "PrezzoMod";
+            this.PrezzoMod.Size = new System.Drawing.Size(100, 20);
+            this.PrezzoMod.TabIndex = 20;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.PrezzoMod);
+            this.Controls.Add(this.NomeMod);
+            this.Controls.Add(this.modif);
             this.Controls.Add(this.Lista);
             this.Controls.Add(this.Prezzo);
             this.Controls.Add(this.Nome);
@@ -176,6 +206,9 @@
         private System.Windows.Forms.TextBox Nome;
         private System.Windows.Forms.TextBox Prezzo;
         private System.Windows.Forms.ListView Lista;
+        private System.Windows.Forms.Button modif;
+        private System.Windows.Forms.TextBox NomeMod;
+        private System.Windows.Forms.TextBox PrezzoMod;
     }
 }
 
