@@ -57,6 +57,20 @@ namespace FormStrutture
             Lista.Clear();
             Visualizza(path);
         }
+        private void delete_Click(object sender, EventArgs e)
+        {
+            int pos = Ricerca(Nome.Text, path);
+            if (pos == -1)
+            {
+                MessageBox.Show("Elemento non presente!");
+            }
+            else
+            {
+                Elimina(pos, path);
+            }
+            Lista.Clear();
+            Visualizza(path);
+        }
         private void ext_Click(object sender, EventArgs e)
         {
             var rispExt = MessageBox.Show("È sicuro di voler terminare l'applicazione?", "Uscita programma", MessageBoxButtons.YesNo);
@@ -104,7 +118,7 @@ namespace FormStrutture
             using (StreamReader sr = File.OpenText(filePath))
             {
                 string s;
-                using (StreamWriter sw = new StreamWriter("Lista.csv", append: true))
+                using (StreamWriter sw = new StreamWriter("ListaTemp.csv", append: true))
                 {
                     int riga = 0;
                     while ((s = sr.ReadLine()) != null)
@@ -125,15 +139,15 @@ namespace FormStrutture
                 }
             }
             File.Delete(filePath);
-            File.Move("Lista.csv", filePath);
-            File.Delete("Lista.csv");
+            File.Move("ListaTemp.csv", filePath);
+            File.Delete("ListaTemp.csv");
         }
         public void Modifica(int posizione, string nome, float prezzo, string filePath)
         {
             using (StreamReader sr = File.OpenText(filePath))
             {
                 string s;
-                using (StreamWriter sw = new StreamWriter("Lista.csv", append: true))
+                using (StreamWriter sw = new StreamWriter("ListaTemp.csv", append: true))
                 {
                     int riga = 0;
                     while ((s = sr.ReadLine()) != null)
@@ -152,8 +166,30 @@ namespace FormStrutture
                 }
             }
             File.Delete(filePath);
-            File.Move("Lista.csv", filePath);
-            File.Delete("Lista.csv");
+            File.Move("ListaTemp.csv", filePath);
+            File.Delete("ListaTemp.csv");
+        }
+        public void Elimina(int posizione, string filePath)
+        {
+            using (StreamReader sr = File.OpenText(filePath))
+            {
+                string s;
+                using (StreamWriter sw = new StreamWriter("ListaTemp.csv", append: true))
+                {
+                    int riga = 0;
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        riga++;
+                        if (riga != posizione)
+                        {
+                            sw.WriteLine(s);
+                        }
+                    }
+                }
+            }
+            File.Delete(filePath);
+            File.Move("ListaTemp.csv", filePath);
+            File.Delete("ListaTemp.csv");
         }
         public void Visualizza(string filePath)
         {

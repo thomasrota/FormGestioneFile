@@ -42,6 +42,7 @@
             this.modif = new System.Windows.Forms.Button();
             this.NomeMod = new System.Windows.Forms.TextBox();
             this.PrezzoMod = new System.Windows.Forms.TextBox();
+            this.delete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -168,11 +169,22 @@
             this.PrezzoMod.Size = new System.Drawing.Size(100, 20);
             this.PrezzoMod.TabIndex = 20;
             // 
+            // delete
+            // 
+            this.delete.Location = new System.Drawing.Point(154, 133);
+            this.delete.Name = "delete";
+            this.delete.Size = new System.Drawing.Size(100, 23);
+            this.delete.TabIndex = 21;
+            this.delete.Text = "Cancella";
+            this.delete.UseVisualStyleBackColor = true;
+            this.delete.Click += new System.EventHandler(this.delete_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.delete);
             this.Controls.Add(this.PrezzoMod);
             this.Controls.Add(this.NomeMod);
             this.Controls.Add(this.modif);
@@ -209,6 +221,7 @@
         private System.Windows.Forms.Button modif;
         private System.Windows.Forms.TextBox NomeMod;
         private System.Windows.Forms.TextBox PrezzoMod;
+        private System.Windows.Forms.Button delete;
     }
 }
 
