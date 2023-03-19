@@ -14,39 +14,33 @@ namespace FormStrutture
     public partial class Form1 : Form
     {
         #region Dichiarazioni
-        public struct prodotto
-        {
-            public string nome;
-            public float prezzo;
-            public int quantità;
-        }
-        prodotto p;
         public float somma;
-        public string path = @"ListaProdotti.csv";
+        public string path;
         #endregion
         #region Funzioni evento
         public Form1()
         {
             InitializeComponent();
+            path = @"ListaProdotti.csv";
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
+            Visualizza(path);
         }
         private void agg_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(path))
+            int pos = Ricerca(Nome.Text, path);
+            if (pos == -1)
             {
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    sw.WriteLine(prodString(p));
-                    MessageBox.Show("File creato correttamente!");
-                }
+                Aggiunta(Nome.Text, float.Parse(Prezzo.Text), path);
             }
             else
             {
-                using (StreamWriter sw = new StreamWriter(path, append:true))
-                {
-                    sw.WriteLine(prodString(p));
-                }
+                AumentaNumero(pos, path);
             }
-            MessageBox.Show("Elemento inserito correttamente!");
+            Lista.Clear();
+            Visualizza(path);
         }
        
         private void ext_Click(object sender, EventArgs e)
@@ -64,12 +58,73 @@ namespace FormStrutture
         }
         #endregion
         #region Funzioni servizio
-        public string prodString(prodotto p)
+        public int Ricerca(string nome, string filePath)
         {
-            p.nome = prodinpt.Text;
-            p.prezzo = float.Parse(prezinpt.Text);
-            p.quantità = 1;
-            return p.nome + "; " + p.prezzo.ToString("0.00") + "; " + p.quantità;
+            int posizione = -1;
+            using (StreamReader sr = File.OpenText(filePath))
+            {
+                string s;
+                int riga = 0;
+                while ((s = sr.ReadLine()) != null)
+                {
+                    riga++;
+                    string[] dati = s.Split(';');
+                    if (dati[0] == nome)
+                    {
+                        posizione = riga;
+                        break;
+                    }
+                }
+            }
+            return posizione;
+        }
+        public void Aggiunta(string nome, float prezzo, string filePath)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath, append: true))
+            {
+                sw.WriteLine($"{nome};{prezzo.ToString("0.00")};1");
+            }
+        }
+        public void AumentaNumero(int posizione, string filePath)
+        {
+            using (StreamReader sr = File.OpenText(filePath))
+            {
+                string s;
+                using (StreamWriter sw = new StreamWriter("Lista.csv", append: true))
+                {
+                    int riga = 0;
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        riga++;
+                        string[] dati = s.Split(';');
+                        if (riga != posizione)
+                        {
+                            sw.WriteLine(s);
+                        }
+                        else
+                        {
+                            int numero = int.Parse(dati[2]);
+                            numero++;
+                            sw.WriteLine($"{dati[0]};{dati[1]};{numero.ToString()}");
+                        }
+                    }
+                }
+            }
+            File.Delete(filePath);
+            File.Move("Lista.csv", filePath);
+            File.Delete("Lista.csv");
+        }
+        public void Visualizza(string filePath)
+        {
+            using (StreamReader sr = File.OpenText(filePath))
+            {
+                string s;
+                while ((s = sr.ReadLine()) != null)
+                {
+                    string[] dati = s.Split(';');
+                    Lista.Items.Add($"Nome: {dati[0]}; Prezzo: {dati[1]} €; Quantità: {dati[2]};");
+                }
+            }
         }
         #endregion
     }
